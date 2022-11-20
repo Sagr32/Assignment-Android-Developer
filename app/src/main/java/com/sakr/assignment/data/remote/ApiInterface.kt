@@ -19,8 +19,7 @@ interface ApiInterface {
 
     // sources endpoint
     @GET("/v2/top-headlines/sources")
-    suspend fun search(
-        @Query("q") query: String,
+    suspend fun getSources(
         @Query("apiKey") apiKey: String = BASE_URL,
     ): Response<SourceResponse>
 
