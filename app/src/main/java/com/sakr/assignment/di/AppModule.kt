@@ -1,6 +1,7 @@
 package com.sakr.assignment.di
 
 import com.sakr.assignment.data.remote.ApiInterface
+import com.sakr.assignment.data.repository.MainRepository
 import com.sakr.assignment.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -30,7 +31,13 @@ class AppModule {
             .build().create(ApiInterface::class.java)
     }
 
+    fun provideMainRepository(
+        retrofitService: ApiInterface,
 
+        ): MainRepository {
+        return MainRepository(retrofitService)
+
+    }
 
 
 }

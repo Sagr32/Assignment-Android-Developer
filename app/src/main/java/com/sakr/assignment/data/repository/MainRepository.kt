@@ -5,8 +5,9 @@ import com.sakr.assignment.data.models.SourceResponse
 import com.sakr.assignment.data.remote.ApiInterface
 import com.sakr.assignment.data.remote.ApiStatus
 import com.sakr.assignment.data.remote.safeApiCall
+import javax.inject.Inject
 
-class MainRepository(private val retrofitService: ApiInterface) {
+class MainRepository @Inject constructor(private val retrofitService: ApiInterface) {
 
     suspend fun getHeadlines(country: String): ApiStatus<NewsResponse> =
         safeApiCall { retrofitService.getHeadlines(country) }
