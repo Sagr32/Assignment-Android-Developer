@@ -26,8 +26,8 @@ class MainRepository @Inject constructor(
         usersDao.insertUser(user)
     }
 
-    suspend fun checkUser(email: String, password: String) {
-        usersDao.readLoginData(email, password)
+    suspend fun checkUser(email: String, password: String): User? {
+        return usersDao.readLoginData(email, password)
     }
 
 

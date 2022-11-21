@@ -1,5 +1,6 @@
 package com.sakr.assignment.ui.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakr.assignment.data.local.User
@@ -16,6 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
+    private val _userInfo = MutableLiveData<User?>()
+    val userInfo: MutableLiveData<User?> = _userInfo
 
     sealed class NewsEvent {
         class Success(val result: NewsResponse) : NewsEvent()
@@ -78,5 +81,18 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
         }
     }
 
+    fun checkUserDetails(email: String, password: String){
+        viewModelScope.launch {
+            val userDetails = repository.checkUser(email, password)
+            if (userDetails?.id != null) {
+                _userInfo.value= userDetails
+            } else {
+                _userInfo.value= null
+
+            }
+
+        }
+
+    }
 
 }
