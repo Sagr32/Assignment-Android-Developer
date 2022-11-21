@@ -9,7 +9,9 @@
         <variable
             name="article"
             type="com.sakr.assignment.data.models.Article" />
-
+        <variable
+            name="clickListener"
+            type="com.sakr.assignment.ui.adapter.HeadlineNewsAdapter.OnClickListener" />
 
     </data>
 

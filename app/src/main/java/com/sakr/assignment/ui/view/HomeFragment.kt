@@ -1,6 +1,7 @@
 package com.sakr.assignment.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.sakr.assignment.databinding.FragmentHomeBinding
+import com.sakr.assignment.ui.adapter.HeadlineNewsAdapter
 import com.sakr.assignment.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -35,14 +37,24 @@ class HomeFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             viewModel.headlines.collect { event ->
                 Timber.tag("event").d("${event.toString()}")
-
                 when (event) {
                     is MainViewModel.NewsEvent.Success -> {
                         Timber.tag("Success").d("Success")
                         //recyclerview adapter here
                         shimmer.visibility = View.GONE
                         errorText.visibility = View.GONE
+                        val adapter =
+                            HeadlineNewsAdapter(
+                                event.result.articles,
+                                HeadlineNewsAdapter.OnClickListener { article ->
+//                                    this.findNavController().navigate(
+//                                        HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
+//                                            article
+//                                        )
+//                                    )
 
+                                })
+                        recyclerView.adapter = adapter
 
                     }
                     is MainViewModel.NewsEvent.Failure -> {

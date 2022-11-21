@@ -2,6 +2,6 @@ package com.sakr.assignment.utils
 
 object Constants {
     const val BASE_URL = "https://newsapi.org"
-    const val API_KEY = "4de527cd36004c32a7690d285a34b5dd"
+    const val API_KEY = "344e477ac241420db1e7501341b3ff48"
     const val USER_TABLE = "User_Table"
 }
