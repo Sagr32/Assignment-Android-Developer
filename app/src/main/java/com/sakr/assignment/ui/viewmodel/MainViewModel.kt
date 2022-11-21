@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakr.assignment.data.local.User
-import com.sakr.assignment.data.models.NewsResponse
+import com.sakr.assignment.data.models.Article
 import com.sakr.assignment.data.models.SourceResponse
 import com.sakr.assignment.data.remote.ApiStatus
 import com.sakr.assignment.data.repository.MainRepository
@@ -12,7 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +20,7 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
     val userInfo: MutableLiveData<User?> = _userInfo
 
     sealed class NewsEvent {
-        class Success(val result: NewsResponse) : NewsEvent()
+        class Success(val result: List<Article>) : NewsEvent()
         class Failure(val errorText: String) : NewsEvent()
         object Loading : NewsEvent()
         object Empty : NewsEvent()
@@ -46,32 +45,56 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
         getSources()
     }
 
-     fun getHeadlinesWithSources(source: String) = viewModelScope.launch {
+    fun getHeadlinesWithSources(source: String) = viewModelScope.launch {
         _headlines.value = NewsEvent.Loading
         when (val headlinesResponse = repository.getHeadlines("", source)) {
-            is ApiStatus.Error -> _headlines.value = NewsEvent.Failure(headlinesResponse.message!!)
+            is ApiStatus.Error -> {
+                val savedData = repository.getSavedData()
+                if (savedData.isEmpty()) {
+                    _headlines.value = NewsEvent.Failure(headlinesResponse.message!!)
+                } else {
+                    _headlines.value = NewsEvent.Success(
+                        savedData
+                    )
+                }
+
+            }
             is ApiStatus.Success -> {
                 val headlineData = headlinesResponse.data!!
+                repository.saveArticles(headlineData.articles)
                 _headlines.value = NewsEvent.Success(
-                    headlineData
+                    headlineData.articles
                 )
             }
             else -> {}
         }
+
     }
 
     private fun getHeadlines() = viewModelScope.launch {
         _headlines.value = NewsEvent.Loading
         when (val headlinesResponse = repository.getHeadlines("us", "")) {
-            is ApiStatus.Error -> _headlines.value = NewsEvent.Failure(headlinesResponse.message!!)
+            is ApiStatus.Error -> {
+                val savedData = repository.getSavedData()
+
+                if (savedData.isEmpty()) {
+                    _headlines.value = NewsEvent.Failure(headlinesResponse.message!!)
+                } else {
+                    _headlines.value = NewsEvent.Success(
+                        savedData
+                    )
+                }
+            }
             is ApiStatus.Success -> {
                 val headlineData = headlinesResponse.data!!
-                _headlines.value = NewsEvent.Success(
-                    headlineData
-                )
+
             }
             else -> {}
         }
+        val savedData = repository.getSavedData()
+        _headlines.value = NewsEvent.Success(
+            savedData
+        )
     }
 
     private fun getSources() = viewModelScope.launch {

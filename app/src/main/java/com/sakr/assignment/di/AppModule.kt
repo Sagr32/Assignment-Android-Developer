@@ -3,6 +3,7 @@ package com.sakr.assignment.di
 import android.content.Context
 import androidx.room.Room
 import com.sakr.assignment.data.local.AppDatabase
+import com.sakr.assignment.data.local.ArticleDao
 import com.sakr.assignment.data.local.UsersDao
 import com.sakr.assignment.data.remote.ApiInterface
 import com.sakr.assignment.data.repository.MainRepository
@@ -38,15 +39,20 @@ class AppModule {
 
     fun provideMainRepository(
         retrofitService: ApiInterface,
-        usersDao: UsersDao
+        usersDao: UsersDao,
+        articleDao: ArticleDao
     ): MainRepository {
-        return MainRepository(retrofitService, usersDao)
+        return MainRepository(retrofitService, usersDao, articleDao)
 
     }
 
+
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext applicationContext: Context): AppDatabase {
+    fun provideAppDatabase(
+        @ApplicationContext applicationContext: Context,
+
+    ): AppDatabase {
         return Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
@@ -58,8 +64,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideArticleDao(appDatabase: AppDatabase): UsersDao {
+    fun provideUsersDao(appDatabase: AppDatabase): UsersDao {
         return appDatabase.usersDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideArticleDao(appDatabase: AppDatabase): ArticleDao {
+        return appDatabase.articleDao()
     }
 
 

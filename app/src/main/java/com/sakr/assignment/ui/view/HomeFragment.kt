@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
                 when (event) {
                     is MainViewModel.NewsEvent.Success -> {
                         shimmer.visibility = View.GONE
-                        if (event.result.articles.isNotEmpty()) {
+                        if (event.result.isNotEmpty()) {
 
                             //recyclerview adapter here
                             newsRecyclerView.visibility = View.VISIBLE
@@ -81,7 +81,7 @@ class HomeFragment : Fragment() {
                             errorText.visibility = View.GONE
                             val adapter =
                                 HeadlineNewsAdapter(
-                                    event.result.articles,
+                                    event.result,
                                     HeadlineNewsAdapter.OnClickListener { article ->
                                         Timber.tag("Article").d(article.toString())
 
@@ -104,10 +104,10 @@ class HomeFragment : Fragment() {
                     is MainViewModel.NewsEvent.Failure -> {
                         Timber.tag("Failure").d("Failure")
                         newsRecyclerView.visibility = View.GONE
+                        Timber.d(event.errorText)
 
                         shimmer.visibility = View.GONE
-                        errorText.visibility = View.VISIBLE
-                        errorText.text = event.errorText
+
 
                     }
                     is MainViewModel.NewsEvent.Loading -> {

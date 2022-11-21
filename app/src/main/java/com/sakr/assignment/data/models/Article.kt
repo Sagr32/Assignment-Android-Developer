@@ -16,11 +16,11 @@ import com.sakr.assignment.utils.Constants.ARTICLE_TABLE
 data class Article @JvmOverloads constructor(
     @SerializedName("author")
     @ColumnInfo(name = "author")
-    val author: String? = "",
+    val author: String?,
 
     @ColumnInfo(name = "content")
     @SerializedName("content")
-    val content: String? = "",
+    val content: String,
 
     @ColumnInfo(name = "description")
     @SerializedName("description")
@@ -30,22 +30,24 @@ data class Article @JvmOverloads constructor(
     @SerializedName("publishedAt")
     val publishedAt: String,
 
-    @Ignore
-    @SerializedName("source")
-    val source: SourceX,
 
-    @PrimaryKey()
-    @SerializedName("url")
-    val url: String,
+    @SerializedName("source")
+    @Ignore
+    val source: SourceX? = SourceX("", ""),
 
     @ColumnInfo(name = "title")
     @SerializedName("title")
     val title: String,
 
+    @PrimaryKey()
+    @SerializedName("url")
+    val url: String,
+
     @ColumnInfo(name = "urlToImage")
     @SerializedName("urlToImage")
-    val urlToImage: String
-) : Parcelable
+    val urlToImage: String,
+
+    ) : Parcelable
 
 
 @Parcelize
