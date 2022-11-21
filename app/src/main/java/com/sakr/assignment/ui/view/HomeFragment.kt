@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
                 when (event) {
                     is MainViewModel.SourceEvent.Success -> {
                         Timber.tag("Success").d("Success")
+                        sourceRecyclerView.visibility = View.VISIBLE
                         //recyclerview adapter here
                         shimmer.visibility = View.GONE
                         errorText.visibility = View.GONE
@@ -51,13 +52,15 @@ class HomeFragment : Fragment() {
                             SourceNewsAdapter(
                                 event.result.sources,
                                 SourceNewsAdapter.OnSourceClicked { source ->
-                                    Timber.tag("source").d(source.toString())
+                                    viewModel.getHeadlinesWithSources(source.name)
                                 })
                         sourceRecyclerView.adapter = adapter
 
                     }
 
                     else -> {
+                        sourceRecyclerView.visibility = View.GONE
+
                     }
                 }
             }
@@ -67,37 +70,49 @@ class HomeFragment : Fragment() {
         // Headlines RecyclerView
         lifecycleScope.launchWhenStarted {
             viewModel.headlines.collect { event ->
-                Timber.tag("event").d("${event.toString()}")
                 when (event) {
                     is MainViewModel.NewsEvent.Success -> {
-                        Timber.tag("Success").d("Success")
-                        //recyclerview adapter here
                         shimmer.visibility = View.GONE
-                        errorText.visibility = View.GONE
-                        val adapter =
-                            HeadlineNewsAdapter(
-                                event.result.articles,
-                                HeadlineNewsAdapter.OnClickListener { article ->
-                                    Timber.tag("Article").d(article.toString())
+                        if (event.result.articles.isNotEmpty()) {
 
-                                    this@HomeFragment.findNavController().navigate(
-                                        HomeFragmentDirections.actionHomeFragmentToArticleDetailsFragment(
-                                            article
+                            //recyclerview adapter here
+                            newsRecyclerView.visibility = View.VISIBLE
+
+                            errorText.visibility = View.GONE
+                            val adapter =
+                                HeadlineNewsAdapter(
+                                    event.result.articles,
+                                    HeadlineNewsAdapter.OnClickListener { article ->
+                                        Timber.tag("Article").d(article.toString())
+
+                                        this@HomeFragment.findNavController().navigate(
+                                            HomeFragmentDirections.actionHomeFragmentToArticleDetailsFragment(
+                                                article
+                                            )
                                         )
-                                    )
 
-                                })
-                        newsRecyclerView.adapter = adapter
+                                    })
+                            newsRecyclerView.adapter = adapter
+                        } else {
+                            newsRecyclerView.visibility = View.GONE
+                            errorText.visibility = View.VISIBLE
+                            errorText.text = "Result is empty"
+                        }
+
 
                     }
                     is MainViewModel.NewsEvent.Failure -> {
                         Timber.tag("Failure").d("Failure")
+                        newsRecyclerView.visibility = View.GONE
+
                         shimmer.visibility = View.GONE
                         errorText.visibility = View.VISIBLE
                         errorText.text = event.errorText
 
                     }
                     is MainViewModel.NewsEvent.Loading -> {
+                        newsRecyclerView.visibility = View.GONE
+
                         Timber.tag("Loading").d("Loading")
                         shimmer.visibility = View.VISIBLE
                         errorText.visibility = View.GONE

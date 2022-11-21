@@ -15,8 +15,10 @@ class MainRepository @Inject constructor(
     private val usersDao: UsersDao
 ) {
 
-    suspend fun getHeadlines(country: String): ApiStatus<NewsResponse> =
-        safeApiCall { retrofitService.getHeadlines(country) }
+     suspend fun getHeadlines(country: String, source: String): ApiStatus<NewsResponse> =
+        safeApiCall { retrofitService.getHeadlines(country, source ?: "") }
+
+
 
     suspend fun getSources(): ApiStatus<SourceResponse> =
         safeApiCall {

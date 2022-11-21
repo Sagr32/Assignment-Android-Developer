@@ -46,10 +46,23 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
         getSources()
     }
 
-    private fun getHeadlines() = viewModelScope.launch {
-        Timber.tag("getHeadlines").d("start")
+     fun getHeadlinesWithSources(source: String) = viewModelScope.launch {
         _headlines.value = NewsEvent.Loading
-        when (val headlinesResponse = repository.getHeadlines("eg")) {
+        when (val headlinesResponse = repository.getHeadlines("", source)) {
+            is ApiStatus.Error -> _headlines.value = NewsEvent.Failure(headlinesResponse.message!!)
+            is ApiStatus.Success -> {
+                val headlineData = headlinesResponse.data!!
+                _headlines.value = NewsEvent.Success(
+                    headlineData
+                )
+            }
+            else -> {}
+        }
+    }
+
+    private fun getHeadlines() = viewModelScope.launch {
+        _headlines.value = NewsEvent.Loading
+        when (val headlinesResponse = repository.getHeadlines("us", "")) {
             is ApiStatus.Error -> _headlines.value = NewsEvent.Failure(headlinesResponse.message!!)
             is ApiStatus.Success -> {
                 val headlineData = headlinesResponse.data!!
@@ -81,13 +94,13 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
         }
     }
 
-    fun checkUserDetails(email: String, password: String){
+    fun checkUserDetails(email: String, password: String) {
         viewModelScope.launch {
             val userDetails = repository.checkUser(email, password)
             if (userDetails?.id != null) {
-                _userInfo.value= userDetails
+                _userInfo.value = userDetails
             } else {
-                _userInfo.value= null
+                _userInfo.value = null
 
             }
 
