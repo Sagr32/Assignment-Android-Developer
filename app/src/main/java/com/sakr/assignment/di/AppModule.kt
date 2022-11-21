@@ -50,7 +50,7 @@ class AppModule {
         return Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            Constants.USER_TABLE
+            "AppDatabase"
         )
             .fallbackToDestructiveMigration()
             .build()

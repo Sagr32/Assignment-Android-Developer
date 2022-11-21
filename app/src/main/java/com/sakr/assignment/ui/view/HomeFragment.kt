@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -47,11 +48,13 @@ class HomeFragment : Fragment() {
                             HeadlineNewsAdapter(
                                 event.result.articles,
                                 HeadlineNewsAdapter.OnClickListener { article ->
-//                                    this.findNavController().navigate(
-//                                        HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-//                                            article
-//                                        )
-//                                    )
+                                    Timber.tag("Article").d(article.toString())
+
+                                    this@HomeFragment.findNavController().navigate(
+                                        HomeFragmentDirections.actionHomeFragmentToArticleDetailsFragment(
+                                            article
+                                        )
+                                    )
 
                                 })
                         recyclerView.adapter = adapter

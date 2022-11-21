@@ -9,9 +9,9 @@ import com.google.gson.annotations.SerializedName
 @Parcelize
 data class Article(
     @SerializedName("author")
-    val author: String,
+    val author: String? = "",
     @SerializedName("content")
-    val content: String,
+    val content: String? = "",
     @SerializedName("description")
     val description: String,
     @SerializedName("publishedAt")
@@ -30,7 +30,7 @@ data class Article(
 @Parcelize
 data class SourceX(
     @SerializedName("id")
-    val id: String = "", // fox-sports
+    val id: String? = "", // fox-sports
     @SerializedName("name")
     val name: String = "Unknown Source"// Fox Sports
 ) : Parcelable

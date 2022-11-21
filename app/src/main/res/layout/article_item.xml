@@ -9,6 +9,7 @@
         <variable
             name="article"
             type="com.sakr.assignment.data.models.Article" />
+
         <variable
             name="clickListener"
             type="com.sakr.assignment.ui.adapter.HeadlineNewsAdapter.OnClickListener" />
@@ -19,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:onClick="@{()->clickListener.onClick(article)}"
         app:cardCornerRadius="5dp"
         app:cardElevation="10dp">
 
