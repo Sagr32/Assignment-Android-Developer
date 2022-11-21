@@ -30,7 +30,7 @@ data class Article(
 @Parcelize
 data class SourceX(
     @SerializedName("id")
-    val id: String, // fox-sports
+    val id: String = "", // fox-sports
     @SerializedName("name")
-    val name: String // Fox Sports
+    val name: String = "Unknown Source"// Fox Sports
 ) : Parcelable
