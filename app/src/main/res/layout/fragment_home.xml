@@ -26,17 +26,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hello_blank_fragment"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/source_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_conversion_absoluteHeight="194dp"
+            tools:layout_conversion_absoluteWidth="40dp" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -48,12 +50,10 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/source_list"
             app:layout_constraintVertical_bias="0.0"
             tools:layout_conversion_absoluteHeight="194dp"
-            tools:layout_conversion_absoluteWidth="40dp">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            tools:layout_conversion_absoluteWidth="40dp" />
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_view_container"

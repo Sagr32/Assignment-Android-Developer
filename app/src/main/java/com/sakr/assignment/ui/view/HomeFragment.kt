@@ -15,13 +15,15 @@ import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.sakr.assignment.databinding.FragmentHomeBinding
 import com.sakr.assignment.ui.adapter.HeadlineNewsAdapter
+import com.sakr.assignment.ui.adapter.SourceNewsAdapter
 import com.sakr.assignment.ui.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var newsRecyclerView: RecyclerView
+    private lateinit var sourceRecyclerView: RecyclerView
     private lateinit var errorText: TextView
     private val viewModel: MainViewModel by viewModels()
     private lateinit var shimmer: ShimmerFrameLayout
@@ -31,10 +33,38 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentHomeBinding.inflate(inflater)
-        recyclerView = binding.newsList
+        newsRecyclerView = binding.newsList
+        sourceRecyclerView = binding.sourceList
         shimmer = binding.shimmerViewContainer
         errorText = binding.txtError
 
+        lifecycleScope.launchWhenStarted {
+            viewModel.sources.collect { event ->
+                Timber.tag("sourceEvent").d("sourceEvent : ${event.toString()}")
+                when (event) {
+                    is MainViewModel.SourceEvent.Success -> {
+                        Timber.tag("Success").d("Success")
+                        //recyclerview adapter here
+                        shimmer.visibility = View.GONE
+                        errorText.visibility = View.GONE
+                        val adapter =
+                            SourceNewsAdapter(
+                                event.result.sources,
+                                SourceNewsAdapter.OnSourceClicked { source ->
+                                    Timber.tag("source").d(source.toString())
+                                })
+                        sourceRecyclerView.adapter = adapter
+
+                    }
+
+                    else -> {
+                    }
+                }
+            }
+        }
+
+
+        // Headlines RecyclerView
         lifecycleScope.launchWhenStarted {
             viewModel.headlines.collect { event ->
                 Timber.tag("event").d("${event.toString()}")
@@ -57,7 +87,7 @@ class HomeFragment : Fragment() {
                                     )
 
                                 })
-                        recyclerView.adapter = adapter
+                        newsRecyclerView.adapter = adapter
 
                     }
                     is MainViewModel.NewsEvent.Failure -> {
