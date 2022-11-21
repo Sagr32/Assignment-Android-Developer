@@ -10,4 +10,5 @@
     <string name="username_or_email">Username or Email</string>
     <string name="create_your_new_account_now">Create your new account now !</string>
     <string name="first_name">First Name</string>
+    <string name="open_url">OPEN URL</string>
 </resources>
