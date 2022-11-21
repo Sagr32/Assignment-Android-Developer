@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,7 +22,7 @@ class LoginFragment : Fragment() {
     lateinit var edtEmail: EditText
     lateinit var edtPassword: EditText
     lateinit var btnLogin: Button
-    lateinit var btnRegister: Button
+    lateinit var btnRegister: TextView
 
 
     override fun onCreateView(

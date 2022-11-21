@@ -11,4 +11,6 @@
     <string name="create_your_new_account_now">Create your new account now !</string>
     <string name="first_name">First Name</string>
     <string name="open_url">OPEN URL</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account ? Sign Up</string>
+    <string name="have_an_account_sign_in">Have an account ! Sign In</string>
 </resources>
