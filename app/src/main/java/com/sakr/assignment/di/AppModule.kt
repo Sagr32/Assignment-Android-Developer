@@ -3,6 +3,7 @@ package com.sakr.assignment.di
 import android.content.Context
 import androidx.room.Room
 import com.sakr.assignment.data.local.AppDatabase
+import com.sakr.assignment.data.local.UsersDao
 import com.sakr.assignment.data.remote.ApiInterface
 import com.sakr.assignment.data.repository.MainRepository
 import com.sakr.assignment.utils.Constants
@@ -37,9 +38,9 @@ class AppModule {
 
     fun provideMainRepository(
         retrofitService: ApiInterface,
-
-        ): MainRepository {
-        return MainRepository(retrofitService)
+        usersDao: UsersDao
+    ): MainRepository {
+        return MainRepository(retrofitService, usersDao)
 
     }
 
@@ -54,5 +55,12 @@ class AppModule {
             .fallbackToDestructiveMigration()
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun provideArticleDao(appDatabase: AppDatabase): UsersDao {
+        return appDatabase.usersDao()
+    }
+
 
 }

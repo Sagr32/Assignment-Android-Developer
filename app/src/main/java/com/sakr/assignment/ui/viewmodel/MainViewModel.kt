@@ -2,6 +2,7 @@ package com.sakr.assignment.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sakr.assignment.data.local.User
 import com.sakr.assignment.data.models.NewsResponse
 import com.sakr.assignment.data.models.SourceResponse
 import com.sakr.assignment.data.remote.ApiStatus
@@ -44,7 +45,6 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
 
     private fun getHeadlines() = viewModelScope.launch {
         Timber.tag("getHeadlines").d("start")
-
         _headlines.value = NewsEvent.Loading
         when (val headlinesResponse = repository.getHeadlines("eg")) {
             is ApiStatus.Error -> _headlines.value = NewsEvent.Failure(headlinesResponse.message!!)
@@ -69,6 +69,12 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
                 )
             }
             else -> {}
+        }
+    }
+
+    fun saveUser(user: User) {
+        viewModelScope.launch {
+            repository.insertUser(user)
         }
     }
 
