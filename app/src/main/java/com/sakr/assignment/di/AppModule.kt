@@ -1,11 +1,15 @@
 package com.sakr.assignment.di
 
+import android.content.Context
+import androidx.room.Room
+import com.sakr.assignment.data.local.AppDatabase
 import com.sakr.assignment.data.remote.ApiInterface
 import com.sakr.assignment.data.repository.MainRepository
 import com.sakr.assignment.utils.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,5 +43,16 @@ class AppModule {
 
     }
 
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext applicationContext: Context): AppDatabase {
+        return Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            Constants.USER_TABLE
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
 
 }

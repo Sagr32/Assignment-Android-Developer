@@ -13,7 +13,7 @@ interface UsersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User): Long
 
-    //checking user exist or not in our db
+    //checking if user exist or not in our db
     @Query("SELECT * FROM User_Table WHERE email LIKE :email AND password LIKE :password")
     fun readLoginData(email: String, password: String): User
 
