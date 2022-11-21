@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { nc: NavController,
                                                         nd: NavDestination, _: Bundle? ->
-            if (nd.id == R.id.loginFragment) {
+            if (nd.id == R.id.loginFragment || nd.id == R.id.registrationFragment) {
                 supportActionBar?.hide()
             } else {
                 supportActionBar?.show()
