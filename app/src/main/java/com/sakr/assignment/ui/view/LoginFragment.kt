@@ -1,4 +1,4 @@
-package com.sakr.assignment
+package com.sakr.assignment.ui.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

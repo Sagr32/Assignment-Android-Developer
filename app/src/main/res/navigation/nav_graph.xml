@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.sakr.assignment.HomeFragment"
+        android:name="com.sakr.assignment.ui.view.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_articleDetailsFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.sakr.assignment.LoginFragment"
+        android:name="com.sakr.assignment.ui.view.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.sakr.assignment.RegistrationFragment"
+        android:name="com.sakr.assignment.ui.view.RegistrationFragment"
         android:label="RegistrationFragment" >
         <action
             android:id="@+id/action_registrationFragment_to_homeFragment"
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/articleDetailsFragment"
-        android:name="com.sakr.assignment.ArticleDetailsFragment"
+        android:name="com.sakr.assignment.ui.view.ArticleDetailsFragment"
         android:label="ArticleDetailsFragment" >
         <argument
             android:name="article"
