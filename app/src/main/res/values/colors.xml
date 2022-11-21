@@ -10,4 +10,5 @@
     <color name="backgroundColor">#FFf6f6f6</color>
     <color name="gradientColor">#FF7e34fe</color>
     <color name="secondaryMainColor">#FF6f6dff</color>
+    <color name="background">#dddddd</color>
 </resources>
