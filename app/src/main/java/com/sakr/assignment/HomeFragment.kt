@@ -7,11 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.sakr.assignment.databinding.FragmentHomeBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class HomeFragment : Fragment() {
 
     override fun onCreateView(
