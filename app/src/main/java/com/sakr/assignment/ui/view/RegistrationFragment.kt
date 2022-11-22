@@ -1,5 +1,6 @@
 package com.sakr.assignment.ui.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.sakr.assignment.data.local.User
 import com.sakr.assignment.databinding.FragmentRegistrationBinding
 import com.sakr.assignment.ui.viewmodel.MainViewModel
+import com.sakr.assignment.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,8 +37,12 @@ class RegistrationFragment : Fragment() {
         edtName = binding.edtFirstName
         btnLogin = binding.signInBtn
         btnRegister = binding.signUpButton
+
+        val sharedPref = requireActivity().getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
         // Inflate the layout for this fragment
         btnLogin.setOnClickListener {
+
             this.findNavController()
                 .navigate(RegistrationFragmentDirections.actionRegistrationFragmentToLoginFragment())
 
@@ -51,6 +57,10 @@ class RegistrationFragment : Fragment() {
                         firstName = edtName.text.toString(),
                     )
                 )
+                editor.apply {
+                    putBoolean(Constants.USER_LOGGED, true)
+                    apply()
+                }
                 Toast.makeText(
                     requireContext(),
                     "Welcome ${edtName.text.toString()} !",

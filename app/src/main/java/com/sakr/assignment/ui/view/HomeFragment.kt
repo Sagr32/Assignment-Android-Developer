@@ -1,11 +1,11 @@
 package com.sakr.assignment.ui.view
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,10 +13,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.sakr.assignment.R
 import com.sakr.assignment.databinding.FragmentHomeBinding
 import com.sakr.assignment.ui.adapter.HeadlineNewsAdapter
 import com.sakr.assignment.ui.adapter.SourceNewsAdapter
 import com.sakr.assignment.ui.viewmodel.MainViewModel
+import com.sakr.assignment.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -27,6 +29,12 @@ class HomeFragment : Fragment() {
     private lateinit var errorText: TextView
     private val viewModel: MainViewModel by viewModels()
     private lateinit var shimmer: ShimmerFrameLayout
+    private lateinit var editor: SharedPreferences.Editor
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +45,8 @@ class HomeFragment : Fragment() {
         sourceRecyclerView = binding.sourceList
         shimmer = binding.shimmerViewContainer
         errorText = binding.txtError
-
+        val sharedPref = requireActivity().getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        editor = sharedPref.edit()
         lifecycleScope.launchWhenStarted {
             viewModel.sources.collect { event ->
                 Timber.tag("sourceEvent").d("sourceEvent : ${event.toString()}")
@@ -130,4 +139,23 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.option_menu, menu)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.logout) {
+            editor.apply {
+                putBoolean(Constants.USER_LOGGED, false)
+                apply()
+            }
+            this.findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
+        }
+        return super.onOptionsItemSelected(item)
+
+
+    }
 }

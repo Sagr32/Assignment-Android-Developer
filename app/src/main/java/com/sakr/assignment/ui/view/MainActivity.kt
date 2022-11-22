@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.sakr.assignment.R
 import com.sakr.assignment.databinding.ActivityMainBinding
 import com.sakr.assignment.ui.viewmodel.MainViewModel
+import com.sakr.assignment.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
